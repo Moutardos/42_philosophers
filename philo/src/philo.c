@@ -6,13 +6,13 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/04/03 13:53:13 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/04/16 02:31:41 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	init_philo(int n)
+t_philo	init_philo(int n, t_time start)
 {
 	t_philo	philo;
 
@@ -21,22 +21,36 @@ t_philo	init_philo(int n)
 	philo.n_fork = NULL;
 	philo.nb_forks = 0;
 	philo.state = THINKING;
-	philo.last_meal = 0;
-	get_time(&philo.s_start);
+	philo.start = start;
 	return (philo);
 }
 
-int	create_table(t_table *table, unsigned int size)
+t_pinfo	set_pinfo(int *args, int ac)
+{
+	t_pinfo	pinfo;
+
+	pinfo.tm_todie = args[1];
+	pinfo.tm_toeat = args[2];
+	pinfo.tm_tosleep = args[3];
+	if (ac == 5)
+		pinfo.n_toeat = args[4];
+	return (pinfo);
+}
+
+int	create_table(t_table *table, unsigned int size, t_time start, int *args, int ac)
 {
 	unsigned int	i;
+	t_pinfo			pinfo;
 
+	pinfo = set_pinfo(args, ac);
 	table->philos = malloc(sizeof(t_philo) * size);
 	if (!table->philos)
 		return (-1);
 	i = 0;
 	while (i < size)
 	{
-		table->philos[i] = init_philo(i);
+		table->philos[i] = init_philo(i, start);
+		table->philos[i].pinfo = pinfo;
 		i++;
 	}
 	i = 0;
@@ -51,4 +65,3 @@ int	create_table(t_table *table, unsigned int size)
 	table->size = size;
 	return (0);
 }
-
