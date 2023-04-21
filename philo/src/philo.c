@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/04/16 02:31:41 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:19:25 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_philo	init_philo(int n, t_time start)
 	t_philo	philo;
 
 	philo.id = n;
-	pthread_mutex_init(&philo.fork, NULL);
+	pthread_mutex_init(&philo.fork.lock, NULL);
+	philo.fork.is_used = FALSE;
 	philo.n_fork = NULL;
-	philo.nb_forks = 0;
 	philo.state = THINKING;
 	philo.start = start;
 	return (philo);
@@ -29,9 +29,9 @@ t_pinfo	set_pinfo(int *args, int ac)
 {
 	t_pinfo	pinfo;
 
-	pinfo.tm_todie = args[1];
-	pinfo.tm_toeat = args[2];
-	pinfo.tm_tosleep = args[3];
+	pinfo.tm_todie = args[1] * 1000;
+	pinfo.tm_toeat = args[2] * 1000;
+	pinfo.tm_tosleep = args[3] * 1000;
 	if (ac == 5)
 		pinfo.n_toeat = args[4];
 	return (pinfo);

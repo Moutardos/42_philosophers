@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/04/16 02:31:51 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:30:00 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,42 +17,81 @@ void	*philo_life(void *data)
 	t_philo	philo;
 
 	philo = *((t_philo *)data);
-	philo.s_start.tv_sec = 0;
-	philo.s_start.tv_usec = 0;
-	philo.last_meal.tv_sec = 0;
-	philo.last_meal.tv_usec = 0;
+	reset_time(&philo.s_start);
+	reset_time(&philo.last_meal);
 	get_time(&philo.last_meal);
 	get_time(&philo.s_start);
-	while (get_time(&philo.last_meal) <= philo.pinfo.tm_todie)
+	while (philo.state != DEAD)
 	{
+		if (philo_dead(&philo))
+			return (NULL);
 		treat_state(&philo);
 	}
-	printf("%lu philosophers %d  died\n",get_time(&philo.start), philo.id);
 	return (NULL);
 }
 
 int	treat_state(t_philo *philo)
 {
-	t_ms	tm_tothink;
+	t_ms	tm_towait;
+	t_state	new_state;
 
-	if (philo->pinfo.tm_toeat < philo->pinfo.tm_tosleep)
-		tm_tothink = philo->pinfo.tm_tosleep;
-	else
-		tm_tothink = philo->pinfo.tm_toeat;
-	if (philo->state == THINKING)
+	if (philo->state == THINKING && !philo_dead(philo))
 	{
-		printf("%lu philosopher %d  is thinking\n",get_time(&philo->start), philo->id);
-		while (get_time(&philo->s_start) < tm_tothink && get_time(&philo->last_meal) < philo->pinfo.tm_todie)
-			usleep(1);
-		return (philo->state = EATING, 0);
+		if (philo->pinfo.tm_toeat < philo->pinfo.tm_tosleep)
+			tm_towait = philo->pinfo.tm_tosleep;
+		else
+			tm_towait = philo->pinfo.tm_toeat;
+		new_state = EATING;
 	}
-	if (philo->state == EATING)
+	else if (philo->state == EATING && !philo_dead(philo))
 	{
-		printf("%lu philosopher %d  is eating\n",get_time(&philo->start), philo->id);
-		while (get_time(&philo->s_start) < philo->pinfo.tm_toeat && (get_time(&philo->last_meal) < philo->pinfo.tm_todie))
-			usleep(1);
-		return (philo->state = SLEEPING, 0);
+		tm_towait = philo->pinfo.tm_toeat;
+		new_state = SLEEPING;
+		reset_time(&philo->last_meal);
+	}
+	else if (philo->state == SLEEPING && !philo_dead(philo))
+	{
+		tm_towait = philo->pinfo.tm_tosleep;
+		new_state = THINKING;
+	}
+	display_state(*philo);
+	while (!philo_dead(philo) && get_time(&philo->s_start) < tm_towait)
+		;
+	if (philo_dead(philo))
+		return (1);
+	return (philo->state = new_state, reset_time(&philo->s_start), 0);
+}
+
+void	display_state(t_philo philo)
+{
+	int		id;
+	t_ms	time;
+
+	time = get_time(&philo.start) / 1000;
+	id = philo.id;
+	if (philo.state == THINKING)
+		printf("%lu philosopher %d is thinking\n", time, id);
+	else if (philo.state == EATING)
+		printf("%lu philosopher %d is eating\n", time, id);
+	else if (philo.state == SLEEPING)
+		printf("%lu philosopher %d is sleeping\n", time, id);
+}
+
+int	philo_dead(t_philo *philo)
+{
+	int		id;
+	t_ms	time;
+	
+	id = philo->id;
+	if (philo->state == DEAD)
+		return (1);
+	if (get_time(&philo->last_meal) >= philo->pinfo.tm_todie)
+	{
+		time = get_time(&philo->start);
+		philo->state = DEAD;
+		printf("%lu philosopher %d is dead\n", time / 1000, id);
+		display_state(*philo);
+		return (1);
 	}
 	return (0);
-
 }
