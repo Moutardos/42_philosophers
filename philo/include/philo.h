@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/04/16 02:00:22 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/04/21 12:18:05 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@
 // Plutot que d'attendre (freeze le processus) quand la fourchette
 // est prise on va modifier le bool is_used quand le droit est accorde
 
-typedef pthread_mutex_t t_fork;
+typedef struct s_fork
+{
+	pthread_mutex_t	lock;
+	t_bool	is_used;
+}	t_fork;
 
 typedef enum e_state
 {
@@ -41,9 +45,8 @@ typedef struct s_philo
 {
 	int			id;
 	t_fork		fork;
-	t_fork		is_used;
 	t_fork		*n_fork;
-	int			nb_forks;
+	t_bool		can_eat;
 	t_state		state;
 	t_time		start;
 	t_time		s_start;
@@ -62,4 +65,6 @@ int		create_table(t_table *table, unsigned int size, t_time start, int *args, in
 t_pinfo	set_pinfo(int *args, int ac);
 int		treat_state(t_philo *philo);
 void	*philo_life(void *data);
+int		philo_dead(t_philo *philo);
+void	display_state(t_philo philo);
 #endif
