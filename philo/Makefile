@@ -8,7 +8,7 @@ NOTLIBFT = $(IDIR)/libft/notlibft.a
 RM = rm -f
 CFLAGS = -Wall -Wextra -I$(IDIR) 
 LFLAGS = -L$(IDIR)/notlibft -lnft
-FILES =  main utils philo philo_life
+FILES =  main utils philo philo_life time
 OBJS = $(patsubst %,$(ODIR)/%,$(FILES:=.o))
 DEPS = $(patsubst %,$(SDIR)/%,$(FILES:=.d))
 

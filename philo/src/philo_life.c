@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/04/21 12:30:00 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/11 20:40:18 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*philo_life(void *data)
 	reset_time(&philo.last_meal);
 	get_time(&philo.last_meal);
 	get_time(&philo.s_start);
-	while (philo.state != DEAD)
+	while (philo.state != DEAD && philo.eaten < philo.pinfo.n_toeat)
 	{
 		if (philo_dead(&philo))
 			return (NULL);
@@ -45,9 +45,12 @@ int	treat_state(t_philo *philo)
 	}
 	else if (philo->state == EATING && !philo_dead(philo))
 	{
+		
 		tm_towait = philo->pinfo.tm_toeat;
+		if (use_fork(philo->l_fork,)
 		new_state = SLEEPING;
 		reset_time(&philo->last_meal);
+		philo->eaten++;
 	}
 	else if (philo->state == SLEEPING && !philo_dead(philo))
 	{
@@ -94,4 +97,9 @@ int	philo_dead(t_philo *philo)
 		return (1);
 	}
 	return (0);
+}
+
+int	take_forks(t_philo *philo)
+{
+	while (philo.l_fork.is_used && philo.)
 }
