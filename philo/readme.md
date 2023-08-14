@@ -1,3 +1,3 @@
 # Philosophers
 
-Threads, process, spaghetti
+Threads, processes, spaghettis
