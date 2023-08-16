@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/14 18:29:36 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:43:03 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	eating(t_philo *philo)
 
 	if (!use_forks(philo))
 	{
-		printf("  FORKS ARE BEING USED BY %d : LF %d RF %d\n", philo->id, philo->l_fork.is_used, philo->r_fork->is_used);
+		printf("  FORKS ARE BEING USED BY %d : LF %d RF %d\n", philo->id, philo->l_fork->is_used, philo->r_fork->is_used);
 		display_state(get_time(&philo->start) / 1000, philo->id, TAKE_FORK);
 		display_state(get_time(&philo->start) / 1000, philo->id, TAKE_FORK);
 		display_state(get_time(&philo->start) / 1000, philo->id, EATING);

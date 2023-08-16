@@ -6,12 +6,26 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:10:39 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/14 18:58:04 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:58:46 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+t_fork	*create_fork(void)
+{
+	t_fork	*fork;
+
+	fork = malloc(sizeof(t_fork));
+	if (!fork)
+		return (NULL);
+	if (pthread_mutex_init(&fork->lock, NULL))
+	{
+		return (safe_free(fork), NULL);
+	}
+	fork->is_used = FALSE;
+	return (fork);
+}
 
 int	take_forks(t_fork *l_fork, t_fork *r_fork)
 {
@@ -40,10 +54,10 @@ int	use_forks(t_philo *philo)
 	t_fork	*r_fork;
 	int		res;
 
-	l_fork = &philo->l_fork;
+	l_fork = philo->l_fork;
 	r_fork = philo->r_fork;
 	if (!l_fork->is_used && !r_fork->is_used)
-		return (res = take_forks(l_fork, r_fork), printf(" LFORK %d RFORK %d;\n", philo->l_fork.is_used, philo->r_fork->is_used), res);
+		return (res = take_forks(l_fork, r_fork), printf(" LFORK %d RFORK %d;\n", philo->l_fork->is_used, philo->r_fork->is_used), res);
 	return (1);
 }
 

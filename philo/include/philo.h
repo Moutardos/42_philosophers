@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/14 18:50:35 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:17:10 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,16 @@ typedef struct s_pinfo
 
 typedef struct s_philo
 {
-	int			id;
-	t_fork		l_fork;
-	t_fork		*r_fork;
-	t_bool		can_eat;
-	t_state		state;
-	t_time		start;
-	t_time		s_start;
-	t_time		last_meal;
-	t_pinfo		pinfo;
-	int			eaten;
+	int		id;
+	t_fork	*l_fork;
+	t_fork	*r_fork;
+	t_bool	can_eat;
+	t_state	state;
+	t_time	start;
+	t_time	s_start;
+	t_time	last_meal;
+	t_pinfo	pinfo;
+	int		eaten;
 }	t_philo;
 
 typedef struct s_table
@@ -67,6 +67,7 @@ t_pinfo	set_pinfo(int *args, int ac);
 void	free_table(t_table table);
 
 // Forks related
+t_fork	*create_fork(void);
 int		are_forks_free(t_fork *l_fork, t_fork *r_fork);
 int		use_forks(t_philo *philo);
 void	put_down_forks(t_philo *philo);
