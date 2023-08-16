@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/16 17:43:32 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:01:19 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_philo	init_philo(int n, t_time start)
 {
 	t_philo	philo;
 
-	philo.id = n;
+	philo.id = n + 1;
 	philo.r_fork = NULL;
 	philo.state = THINKING;
 	philo.start = start;

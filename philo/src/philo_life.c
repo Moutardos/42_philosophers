@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/16 17:43:45 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:02:42 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	philo_dead(t_philo *philo)
 	{
 		time = get_time(&philo->start);
 		philo->state = DEAD;
-		display_state(time, philo->id, DEAD);
+		display_state(time / 1000, philo->id, DEAD);
 		return (1);
 	}
 	return (0);

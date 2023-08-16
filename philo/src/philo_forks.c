@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:10:39 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/16 16:58:46 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:55:12 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	take_forks(t_fork *l_fork, t_fork *r_fork)
 	pthread_mutex_lock(&r_fork->lock);
 	if (!l_fork->is_used && !r_fork->is_used)
 	{
-		printf(" LOCK LFORK(%d) %d RFORK(%d) %d\n", l_fork->p_id, l_fork->is_used, r_fork->p_id, r_fork->is_used);
 		l_fork->is_used = TRUE;
 		r_fork->is_used = TRUE;
 	}
@@ -57,7 +56,7 @@ int	use_forks(t_philo *philo)
 	l_fork = philo->l_fork;
 	r_fork = philo->r_fork;
 	if (!l_fork->is_used && !r_fork->is_used)
-		return (res = take_forks(l_fork, r_fork), printf(" LFORK %d RFORK %d;\n", philo->l_fork->is_used, philo->r_fork->is_used), res);
+		return (res = take_forks(l_fork, r_fork), res);
 	return (1);
 }
 
@@ -66,7 +65,7 @@ void	put_down_forks(t_philo *philo)
 	t_fork	*l_fork;
 	t_fork	*r_fork;
 
-	l_fork = &philo->l_fork;
+	l_fork = philo->l_fork;
 	r_fork = philo->r_fork;
 	pthread_mutex_lock(&l_fork->lock);
 	pthread_mutex_lock(&r_fork->lock);
