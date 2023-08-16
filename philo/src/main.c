@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:07:10 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/11 19:00:19 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/14 18:51:23 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ int	main(int ac,const char **av)
 	i = -1;
 	while (++i < args[0])
 		pthread_join(pdt[i], NULL);
-	free(args);
+	safe_free(args);
 	return (0);
 }

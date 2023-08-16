@@ -220,4 +220,5 @@ void		   ft_free_split(void *s);
 
 /* Atoi but now with long long!*/
 long long	ft_strtoll(const char *str);
+void		safe_free(void *ptr);
 #endif

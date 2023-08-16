@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/11 20:39:12 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/14 18:50:35 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@
 # include <pthread.h>
 # include "utils.h"
 
-// Plutot que d'attendre (freeze le processus) quand la fourchette
-// est prise on va modifier le bool is_used quand le droit est accorde
-
 typedef struct s_fork
 {
+	int				p_id;
 	pthread_mutex_t	lock;
-	t_bool	is_used;
+	t_bool			is_used;
 }	t_fork;
 
 typedef enum e_state
@@ -30,6 +28,7 @@ typedef enum e_state
 	THINKING,
 	EATING,
 	SLEEPING,
+	TAKE_FORK,
 	DEAD
 }	t_state;
 
@@ -67,11 +66,20 @@ int		create_table(t_table *table, t_time start, int *args, int ac);
 t_pinfo	set_pinfo(int *args, int ac);
 void	free_table(t_table table);
 
-// Treatment
+// Forks related
+int		are_forks_free(t_fork *l_fork, t_fork *r_fork);
+int		use_forks(t_philo *philo);
+void	put_down_forks(t_philo *philo);
+
+// States treatment
+void	thinking(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	eating(t_philo *philo);
+void	display_state(t_ms time, int id, t_state state);
+
+// The daily life of a philosopher
 int		treat_state(t_philo *philo);
 void	*philo_life(void *data);
 int		philo_dead(t_philo *philo);
-void	display_state(t_philo philo);
-int		are_forks_free(t_fork *l_fork, t_fork *r_fork);
-int		use_fork(t_fork *fork, t_bool use);
+
 #endif

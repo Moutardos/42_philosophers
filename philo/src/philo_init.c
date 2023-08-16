@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/11 20:43:42 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/14 18:55:54 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_philo	init_philo(int n, t_time start)
 	philo.id = n;
 	pthread_mutex_init(&philo.l_fork.lock, NULL);
 	philo.l_fork.is_used = FALSE;
+	philo.l_fork.p_id = n;
 	philo.r_fork = NULL;
 	philo.state = THINKING;
 	philo.start = start;
@@ -76,39 +77,4 @@ void	free_table(t_table table)
 			i++;
 		}
 	}
-}
-
-int	use_fork(t_fork *fork, t_bool use)
-{
-	t_bool	fail;
-
-	fail = FALSE;
-	pthread_mutex_lock(&fork->lock);
-	if (fork->is_used != use)
-		fork->is_used = use;
-	else 
-		fail = TRUE;
-	pthread_mutex_unlock(&fork->lock);
-	return (fail);
-}
-
-int	can_philo_eat(t_philo *philo)
-{
-	t_fork	*l_fork;
-	t_fork	*r_fork;
-
-	l_fork = &philo->l_fork;
-	r_fork = philo->r_fork;
-	if (!l_fork->is_used && !r_fork->is_used)
-	{
-		if (!use_fork(l_fork, TRUE))
-			return (1);
-		if (!use_fork(r_fork, TRUE))
-		{
-			use_fork(l_fork, FALSE);
-			return (1);
-		}
-		return (0);
-	}
-	return (1);
 }

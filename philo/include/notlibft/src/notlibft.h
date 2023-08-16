@@ -147,7 +147,7 @@ void		ft_striter(char *s, void (*f)(char *));
 char		**ft_split(char const *s, char c);
 
 /* return 1 if the char c is in s */
-int			ft_cinstr(char const *s, char c);
+int		ft_cinstr(char const *s, char c);
 /** DISPLAY **/
 
 /* display the character c in the file descriptor fd */
@@ -187,37 +187,38 @@ long		ft_pow(int n, int pow);
 t_list		*ft_lstnew(void *content);
 
 /* add the new element at the start of the linked list */
-void		ft_lstadd_front(t_list **lst, t_list *new);
+void		   ft_lstadd_front(t_list **lst, t_list *new);
 
 int			ft_lstsize(t_list *lst);
 
 t_list		*ft_lstlast(t_list *lst);
 
-void		ft_lstadd_back(t_list **lst, t_list *new);
+void		   ft_lstadd_back(t_list **lst, t_list *new);
 
-void		ft_lstdelone(t_list *lst, void (*del)(void *));
+void		   ft_lstdelone(t_list *lst, void (*del)(void *));
 
-void		ft_lstclear(t_list **lst, void (*del)(void *));
+void	   	ft_lstclear(t_list **lst, void (*del)(void *));
 
-void		ft_lstiter(t_list *lst, void (*f)(void *));
+void		   ft_lstiter(t_list *lst, void (*f)(void *));
 
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 int			ft_printf(const char *s, ...);
 
-char		*get_next_line(int fd);
+char		   *get_next_line(int fd);
 
 int			count_lines(int fd);
 int			ft_bitsize(int n);
 
-/* Turn an array of string into an array of int.
-   change the int in size into the size of the new array.
+/* Turn a string of number seperated by spaces into an array of int.
+   change the int in len into the size of the new array.
    return null if met with an invalid number */
-int	*ft_strtoi(const char **str, int *size);
+int			*ft_strtoi(const char **str, int *size);
 
 /* Free a null terminated array of array */
-void		ft_free_split(void *s);
+void		   ft_free_split(void *s);
 
 /* Atoi but now with long long!*/
 long long	ft_strtoll(const char *str);
+void		safe_free(void *ptr);
 #endif

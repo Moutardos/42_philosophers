@@ -27,7 +27,7 @@ int	*parse_args(int ac,const char **av)
 	while (i < ac)
 	{
 		if (args[i] < 0)
-			return (free(args), NULL);
+			return (safe_free(args), NULL);
 		i++;
 	}
 	return (args);
