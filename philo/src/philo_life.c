@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/16 18:02:42 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/25 15:21:48 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,19 @@
 
 void	*philo_life(void *data)
 {
-	t_philo	philo;
+	t_philo	*philo;
 
-	philo = *((t_philo *)data);
-	reset_time(&philo.s_start);
-	reset_time(&philo.last_meal);
-	get_time(&philo.last_meal);
-	get_time(&philo.s_start);
-	while (!treat_state(&philo) && philo.eaten < philo.pinfo.n_toeat)
+	philo = ((t_philo *)data);
+	reset_time(&philo->s_start);
+	reset_time(&philo->last_meal);
+	get_time(&philo->last_meal);
+	get_time(&philo->s_start);
+	if (philo->pinfo.size_table % 2 == 0 && philo->id % 2)
+		while (get_time(&philo->s_start) < 5)
+			;
+	reset_time(&philo->s_start);
+	get_time(&philo->s_start);
+	while (!treat_state(philo) && philo->eaten < philo->pinfo.n_toeat)
 		;
 	return (NULL);
 }
@@ -30,15 +35,15 @@ int	treat_state(t_philo *philo)
 {
 	t_state	new_state;
 
-	if (philo->state == THINKING && !philo_dead(philo))
+	if (philo_dead(philo))
+		return (1);
+	else if (philo->state == THINKING && !philo_dead(philo))
 		thinking(philo);
 	else if (philo->state == EATING && !philo_dead(philo))
 		eating(philo);
 	else if (philo->state == SLEEPING && !philo_dead(philo))
 		sleeping(philo);
-	if (philo_dead(philo))
-		return (1);
-	return (reset_time(&philo->s_start), 0);
+	return (reset_time(&philo->s_start), philo_dead(philo));
 }
 
 int	philo_dead(t_philo *philo)
@@ -47,13 +52,19 @@ int	philo_dead(t_philo *philo)
 	t_ms	time;
 	
 	id = philo->id;
-	if (philo->state == DEAD)
+	if (philo->state == DEAD || *(philo->pinfo.stop))
 		return (1);
+	//printf(" DEBUG PHILO  %d: LAST MEAL %d\n", philo->id, get_time(&philo->last_meal) / 1000);
 	if (get_time(&philo->last_meal) >= philo->pinfo.tm_todie)
 	{
-		time = get_time(&philo->start);
-		philo->state = DEAD;
-		display_state(time / 1000, philo->id, DEAD);
+		philo->time_dead = get_time(&philo->start) / 1000;
+		pthread_mutex_lock(&philo->pinfo.stop_lock);
+		if (!*philo->pinfo.stop)
+			philo->state = DEAD;
+		else
+			philo->state = OUT;
+		*philo->pinfo.stop = TRUE;
+		pthread_mutex_unlock(&philo->pinfo.stop_lock);
 		return (1);
 	}
 	return (0);

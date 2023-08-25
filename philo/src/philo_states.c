@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/16 18:13:57 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/25 15:12:16 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ void	thinking(t_philo *philo)
 {
 	t_ms	to_wait; 
 
-	if (philo->pinfo.tm_toeat < philo->pinfo.tm_tosleep)
-			to_wait = philo->pinfo.tm_toeat;
-		else
-			to_wait = philo->pinfo.tm_tosleep;
+	to_wait = 0;
 	display_state(get_time(&philo->start) / 1000, philo->id, THINKING);
 	philo->state = EATING;
-	while (!philo_dead(philo) && get_time(&philo->s_start) < to_wait)
+	// if (philo->pinfo.size_table % 2)
+	// {
+	// 	if (philo->pinfo.tm_toeat )
+	// 		to_wait =  ((philo->id - 1) % 3) * philo->pinfo.tm_toeat;
+	// }
+	while (!philo_dead(philo) && get_time(&philo->s_start) < to_wait);
 		;
 }
 
@@ -44,13 +46,14 @@ void	eating(t_philo *philo)
 		display_state(get_time(&philo->start) / 1000, philo->id, TAKE_FORK);
 		display_state(get_time(&philo->start) / 1000, philo->id, TAKE_FORK);
 		display_state(get_time(&philo->start) / 1000, philo->id, EATING);
+		reset_time(&philo->last_meal);
+		get_time(&philo->last_meal);
 		while (!philo_dead(philo) && get_time(&philo->s_start) < philo->pinfo.tm_toeat)
 			;
+		put_down_forks(philo);
 		if (philo_dead(philo))
 			return ;
-		put_down_forks(philo);
 		philo->state = SLEEPING;
-		reset_time(&philo->last_meal);
 		philo->eaten++;
 	}
 }

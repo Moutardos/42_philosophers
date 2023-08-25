@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:07:10 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/16 17:49:51 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/25 14:41:29 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,36 @@ int	main(int ac,const char **av)
 		pthread_create(&(pdt[i]), NULL, philo_life, &(ptable.philos[i]));
 	i = -1;
 	while (++i < args[0])
-	{
-		if (i % 2)
-			usleep(1000);
 		pthread_join(pdt[i], NULL);
-	}
+	while (!check_loop(ptable, pdt))
+		;
 	safe_free(args);
+	free_table(ptable);
+	return (0);
+}
+
+int	check_loop(t_table table, pthread_t *pdt)
+{
+	int		i;
+	t_philo	current_philo;
+	
+	i = 0;
+	while (i < table.size)
+	{
+		current_philo = table.philos[i];
+		if (current_philo.state == DEAD)
+		{
+			if (current_philo.state == DEAD)
+				display_state(current_philo.time_dead, current_philo.id, DEAD);
+			i = 0;
+			while (i < table.size)
+			{
+				pthread_detach(&pdt[i]);
+				i++;
+			}
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/16 18:01:19 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/08/25 15:08:36 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,21 @@ t_philo	init_philo(int n, t_time start)
 	return (philo);
 }
 
-t_pinfo	set_pinfo(int *args, int ac)
+int		set_pinfo(t_pinfo *pinfo, int *args, int ac)
 {
-	t_pinfo	pinfo;
-
-	pinfo.tm_todie = args[1] * 1000;
-	pinfo.tm_toeat = args[2] * 1000;
-	pinfo.tm_tosleep = args[3] * 1000;
+	pinfo->stop = malloc(sizeof(t_bool));
+	if (!pinfo->stop)
+		return (-1);
+	*pinfo->stop = FALSE; 
+	if (pthread_mutex_init(&pinfo->stop_lock, NULL))
+		return (safe_free(pinfo->stop), pinfo->stop = NULL, -1);
+	pinfo->tm_todie = args[1] * 1000;
+	pinfo->tm_toeat = args[2] * 1000;
+	pinfo->tm_tosleep = args[3] * 1000;
 	if (ac == 5)
-		pinfo.n_toeat = args[4];
-	return (pinfo);
+		pinfo->n_toeat = args[4];
+	pinfo->size_table = args[0];
+	return (0);
 }
 
 int	create_table(t_table *table, t_time start, int *args, int ac)
@@ -43,7 +48,8 @@ int	create_table(t_table *table, t_time start, int *args, int ac)
 	unsigned int	size;
 
 	size = args[0];
-	pinfo = set_pinfo(args, ac);
+	if (set_pinfo(&pinfo, args, ac) < 0)
+		return (-1);
 	table->philos = ft_calloc(size, sizeof(t_philo) * size);
 	if (!table->philos)
 		return (-1);
