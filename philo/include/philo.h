@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/25 14:55:42 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:54:21 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ typedef struct s_pinfo
 	unsigned int	n_toeat;
 	int				size_table;
 	t_bool			*stop;
+	t_time			*real_start;
 	pthread_mutex_t	stop_lock;
 }	t_pinfo;
 
 typedef struct s_philo
 {
 	int				id;
-	t_bool			*stop;
 	t_fork			*l_fork;
 	t_fork			*r_fork;
 	t_bool			can_eat;

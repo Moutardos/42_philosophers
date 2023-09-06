@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/25 15:21:48 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:24:17 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	*philo_life(void *data)
 	t_philo	*philo;
 
 	philo = ((t_philo *)data);
+	while (*philo->pinfo.stop)
+		;
+	philo->start = *philo->pinfo.real_start;
 	reset_time(&philo->s_start);
 	reset_time(&philo->last_meal);
 	get_time(&philo->last_meal);
 	get_time(&philo->s_start);
-	if (philo->pinfo.size_table % 2 == 0 && philo->id % 2)
-		while (get_time(&philo->s_start) < 5)
-			;
 	reset_time(&philo->s_start);
 	get_time(&philo->s_start);
 	while (!treat_state(philo) && philo->eaten < philo->pinfo.n_toeat)

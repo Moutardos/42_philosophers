@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/25 15:12:16 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:37:40 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ void	thinking(t_philo *philo)
 	to_wait = 0;
 	display_state(get_time(&philo->start) / 1000, philo->id, THINKING);
 	philo->state = EATING;
-	// if (philo->pinfo.size_table % 2)
-	// {
-	// 	if (philo->pinfo.tm_toeat )
-	// 		to_wait =  ((philo->id - 1) % 3) * philo->pinfo.tm_toeat;
-	// }
+	if (philo->pinfo.size_table % 2 == 0 && philo->id % 2)
+	{
+		// printf("I'm %d table size %d ! waiting before eating\n", philo->id, philo->pinfo.size_table);
+		to_wait = philo->pinfo.tm_toeat;
+	}
+	// else
+	// 	printf("I'm %d table size %d ! not waiting before eating!\n", philo->id, philo->pinfo.size_table );
 	while (!philo_dead(philo) && get_time(&philo->s_start) < to_wait);
 		;
 }

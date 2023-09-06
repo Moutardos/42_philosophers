@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/25 15:08:36 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:03:08 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,14 @@ int		set_pinfo(t_pinfo *pinfo, int *args, int ac)
 	pinfo->stop = malloc(sizeof(t_bool));
 	if (!pinfo->stop)
 		return (-1);
-	*pinfo->stop = FALSE; 
+	*pinfo->stop = TRUE; 
 	if (pthread_mutex_init(&pinfo->stop_lock, NULL))
 		return (safe_free(pinfo->stop), pinfo->stop = NULL, -1);
+	pinfo->real_start = malloc(sizeof(t_time));
+	if (!pinfo->real_start)
+		return (-1, safe_free(pinfo->stop), pinfo->stop = NULL, -1);
+	pinfo->real_start->tv_usec = 0;
+	pinfo->real_start->tv_sec = 0;
 	pinfo->tm_todie = args[1] * 1000;
 	pinfo->tm_toeat = args[2] * 1000;
 	pinfo->tm_tosleep = args[3] * 1000;

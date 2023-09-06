@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:07:10 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/25 14:41:29 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/06 17:03:18 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,19 @@ int	main(int ac,const char **av)
 	i = -1;
 	while (++i < args[0])
 	{
-		printf("   Philo ID %d : rfork : %p (originally %p)\n",i, ptable.philos[i].r_fork, &ptable.philos[i > 0 ? i -1 : ptable.size - 1].l_fork);
+		printf("   Philo ID %d : rfork : %p (originally %p)\n",i, ptable.philos[i].r_fork, ptable.philos[i > 0 ? i -1 : ptable.size - 1].l_fork);
 	}
 	i = -1;
 	while (++i < args[0])
-	
 		pthread_create(&(pdt[i]), NULL, philo_life, &(ptable.philos[i]));
 	i = -1;
+	get_time(ptable.philos[0].pinfo.real_start);
+	pthread_mutex_lock(&ptable.philos[0].pinfo.stop_lock);
+	*ptable.philos[0].pinfo.stop = FALSE;
+	pthread_mutex_unlock(&ptable.philos[0].pinfo.stop_lock);
 	while (++i < args[0])
 		pthread_join(pdt[i], NULL);
-	while (!check_loop(ptable, pdt))
-		;
+	check_loop(ptable, pdt);
 	safe_free(args);
 	free_table(ptable);
 	return (0);
@@ -65,13 +67,7 @@ int	check_loop(t_table table, pthread_t *pdt)
 		{
 			if (current_philo.state == DEAD)
 				display_state(current_philo.time_dead, current_philo.id, DEAD);
-			i = 0;
-			while (i < table.size)
-			{
-				pthread_detach(&pdt[i]);
-				i++;
-			}
-			return (1);
+			return (0);
 		}
 		i++;
 	}
