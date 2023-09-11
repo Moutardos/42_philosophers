@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:10:39 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/08/18 17:26:36 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/11 13:39:15 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,13 @@ int	use_forks(t_philo *philo)
 {
 	t_fork	*l_fork;
 	t_fork	*r_fork;
-	int		res;
 
 	l_fork = philo->l_fork;
 	r_fork = philo->r_fork;
 	if (!r_fork)
 		return (1);
 	if (!l_fork->is_used && !r_fork->is_used)
-		return (res = take_forks(l_fork, r_fork), res);
+		return (take_forks(l_fork, r_fork));
 	return (1);
 }
 

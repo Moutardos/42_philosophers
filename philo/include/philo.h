@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/06 15:54:21 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:21:53 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ typedef struct s_pinfo
 	t_ms			tm_tosleep;
 	unsigned int	n_toeat;
 	int				size_table;
-	t_bool			*stop;
-	t_time			*real_start;
+	t_bool			stop;
+	t_time			real_start;
 	pthread_mutex_t	stop_lock;
+	pthread_mutex_t	printf_lock;
 }	t_pinfo;
 
 typedef struct s_philo
@@ -56,7 +57,7 @@ typedef struct s_philo
 	t_time			s_start;
 	t_time			last_meal;
 	t_ms			time_dead;
-	t_pinfo			pinfo;
+	t_pinfo			*pinfo;
 	int				eaten;
 }	t_philo;
 
@@ -66,13 +67,10 @@ typedef struct s_table
 	unsigned int	size;
 }	t_table;
 
-// Main
-int	check_loop(t_table table, pthread_t *pdt);
-
 // Initialisation
-t_philo	init_philo(int n, t_time start);
-int		create_table(t_table *table, t_time start, int *args, int ac);
-int		set_pinfo(t_pinfo *pinfo, int *args, int ac);
+t_philo	init_philo(int n);
+int		create_table(t_table *table, int *args, int ac);
+t_pinfo	*set_pinfo(int *args, int ac);
 void	free_table(t_table table);
 
 // Forks related
@@ -85,11 +83,11 @@ void	put_down_forks(t_philo *philo);
 void	thinking(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	eating(t_philo *philo);
-void	display_state(t_ms time, int id, t_state state);
+void	display_state(t_philo *philo, t_state state);
 
 // The daily life of a philosopher
 int		treat_state(t_philo *philo);
 void	*philo_life(void *data);
-int		philo_dead(t_philo *philo);
+int		stop_condition(t_philo *philo);
 
 #endif
