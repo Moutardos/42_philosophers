@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/11 16:02:11 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:26:55 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_pinfo	*set_pinfo(int *args, int ac)
 	if (pthread_mutex_init(&pinfo->printf_lock, NULL))
 	{
 		pthread_mutex_destroy(&pinfo->stop_lock);
-		return (safe_free(pinfo),  NULL);
+		return (safe_free(pinfo), NULL);
 	}
 	pinfo->real_start.tv_usec = 0;
 	pinfo->real_start.tv_sec = 0;
@@ -59,17 +59,16 @@ int	create_table(t_table *table, int *args, int ac)
 {
 	unsigned int	i;
 	t_pinfo			*pinfo;
-	unsigned int	size;
 
-	size = args[0];
 	pinfo = set_pinfo(args, ac);
 	if (!pinfo)
 		return (-1);
 	table->philos = ft_calloc(size, sizeof(t_philo) * size);
 	if (!table->philos)
 		return (-1);
+	table->size = args[0];
 	i = 0;
-	while (i < size)
+	while (i < table->size)
 	{
 		table->philos[i] = init_philo(i);
 		table->philos[i].l_fork = create_fork();
@@ -80,9 +79,8 @@ int	create_table(t_table *table, int *args, int ac)
 		table->philos[i].pinfo = pinfo;
 		i++;
 	}
-	if (size > 1)
+	if (table->size > 1)
 		table->philos[0].r_fork = table->philos[size - 1].l_fork;
-	table->size = size;
 	return (0);
 }
 
@@ -104,4 +102,12 @@ void	free_table(t_table table)
 		}
 		safe_free(table.philos);
 	}
+}
+
+void	start_routine(t_pinfo	*pinfo)
+{
+	get_time(pinfo->real_start);
+	pthread_mutex_lock(pinfo->stop_lock);
+	pinfo->stop = FALSE;
+	pthread_mutex_unlock(pinfo->stop_lock);
 }

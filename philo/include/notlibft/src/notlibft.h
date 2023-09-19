@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   notlibft.h                                            :+:      :+:    :+:   */
+/*   notlibft.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Loic Cozdenmat <Loic Cozdenmat@student.    +#+  +:+       +#+        */
+/*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/17 01:35:07 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/03/09 12:38:37 by Loic Cozden      ###   ########.fr       */
+/*   Created: 2023/09/13 15:24:30 by lcozdenm          #+#    #+#             */
+/*   Updated: 2023/09/13 15:34:21 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		*ft_memcpy(void *dst, const void *src, size_t n);
 void		*ft_memmove(void *dst, const void *src, size_t len);
 
 /* return 0 if they have the same data, positive number if the
-   first different byte is bigger or else a negative number */
+	first different byte is bigger or else a negative number */
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
 
 /** STR **/
@@ -67,11 +67,11 @@ size_t		ft_strlcpy(char *dst, const char *src, size_t size);
 size_t		ft_strlcat(char *dst, const char *src, size_t size);
 
 /* compare 2 string, return positive if s1 > s2, negative if s2 > s1 
-   else 0 if equal */
+	else 0 if equal */
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
 /* locate the string little inside the string big and return where it begins.
-   doesn't search after len character */
+	doesn't search after len character */
 char		*ft_strnstr(const char *big, const char *little, size_t len);
 
 /*return the length of the NUL character terminated string s*/
@@ -147,7 +147,7 @@ void		ft_striter(char *s, void (*f)(char *));
 char		**ft_split(char const *s, char c);
 
 /* return 1 if the char c is in s */
-int		ft_cinstr(char const *s, char c);
+int			ft_cinstr(char const *s, char c);
 /** DISPLAY **/
 
 /* display the character c in the file descriptor fd */
@@ -163,7 +163,7 @@ void		ft_putendl_fd(char *s, int fd);
 int			ft_putnbr_fd(int n, int fd);
 int			ft_putnbru_fd(unsigned int n, int fd);
 /* print the UNSIGNED number hexadecimal form in the file descriptor,
-   with the nsize and in uppercase or not*/
+	with the nsize and in uppercase or not*/
 int			ft_puthex_fd(size_t n, int fd, unsigned int nsize, int up);
 
 /** CONVERT **/
@@ -187,38 +187,38 @@ long		ft_pow(int n, int pow);
 t_list		*ft_lstnew(void *content);
 
 /* add the new element at the start of the linked list */
-void		   ft_lstadd_front(t_list **lst, t_list *new);
+void		ft_lstadd_front(t_list **lst, t_list *new);
 
 int			ft_lstsize(t_list *lst);
 
 t_list		*ft_lstlast(t_list *lst);
 
-void		   ft_lstadd_back(t_list **lst, t_list *new);
+void		ft_lstadd_back(t_list **lst, t_list *new);
 
-void		   ft_lstdelone(t_list *lst, void (*del)(void *));
+void		ft_lstdelone(t_list *lst, void (*del)(void *));
 
-void	   	ft_lstclear(t_list **lst, void (*del)(void *));
+void		ft_lstclear(t_list **lst, void (*del)(void *));
 
-void		   ft_lstiter(t_list *lst, void (*f)(void *));
+void		ft_lstiter(t_list *lst, void (*f)(void *));
 
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 int			ft_printf(const char *s, ...);
 
-char		   *get_next_line(int fd);
+char		*get_next_line(int fd);
 
 int			count_lines(int fd);
 int			ft_bitsize(int n);
 
 /* Turn a string of number seperated by spaces into an array of int.
-   change the int in len into the size of the new array.
-   return null if met with an invalid number */
+	change the int in len into the size of the new array.
+	return null if met with an invalid number */
 int			*ft_strtoi(const char **str, int *size);
 
 /* Free a null terminated array of array */
-void		   ft_free_split(void *s);
+void		ft_free_split(void *s);
 
 /* Atoi but now with long long!*/
-long long	ft_strtoll(const char *str);
+longlong	ft_strtoll(const char *str);
 void		safe_free(void *ptr);
 #endif

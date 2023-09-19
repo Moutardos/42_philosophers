@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/11 15:21:53 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:04:18 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ void	display_state(t_philo *philo, t_state state);
 int		treat_state(t_philo *philo);
 void	*philo_life(void *data);
 int		stop_condition(t_philo *philo);
+void	display_dead(t_table table);
 
 #endif
