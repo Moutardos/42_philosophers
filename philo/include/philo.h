@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/19 15:04:18 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:41:59 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_pinfo
 	t_ms			tm_todie;
 	t_ms			tm_toeat;
 	t_ms			tm_tosleep;
-	unsigned int	n_toeat;
+	int				n_toeat;
 	int				size_table;
 	t_bool			stop;
 	t_time			real_start;
@@ -72,6 +72,7 @@ t_philo	init_philo(int n);
 int		create_table(t_table *table, int *args, int ac);
 t_pinfo	*set_pinfo(int *args, int ac);
 void	free_table(t_table table);
+void	start_routine(t_pinfo	*pinfo);
 
 // Forks related
 t_fork	*create_fork(void);

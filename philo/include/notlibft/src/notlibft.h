@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/13 15:24:30 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/13 15:34:21 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:30:39 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,6 @@ int			*ft_strtoi(const char **str, int *size);
 void		ft_free_split(void *s);
 
 /* Atoi but now with long long!*/
-longlong	ft_strtoll(const char *str);
+long long	ft_strtoll(const char *str);
 void		safe_free(void *ptr);
 #endif

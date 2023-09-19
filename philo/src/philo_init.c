@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/19 15:26:55 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:52:39 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ int	create_table(t_table *table, int *args, int ac)
 	pinfo = set_pinfo(args, ac);
 	if (!pinfo)
 		return (-1);
-	table->philos = ft_calloc(size, sizeof(t_philo) * size);
+	table->size = args[0];
+	table->philos = ft_calloc(table->size, sizeof(t_philo));
 	if (!table->philos)
 		return (-1);
-	table->size = args[0];
 	i = 0;
 	while (i < table->size)
 	{
@@ -80,13 +80,13 @@ int	create_table(t_table *table, int *args, int ac)
 		i++;
 	}
 	if (table->size > 1)
-		table->philos[0].r_fork = table->philos[size - 1].l_fork;
+		table->philos[0].r_fork = table->philos[table->size - 1].l_fork;
 	return (0);
 }
 
 void	free_table(t_table table)
 {
-	int	i;
+	unsigned int	i;
 
 	i = 0;
 	if (table.philos)
@@ -106,8 +106,8 @@ void	free_table(t_table table)
 
 void	start_routine(t_pinfo	*pinfo)
 {
-	get_time(pinfo->real_start);
-	pthread_mutex_lock(pinfo->stop_lock);
+	get_time(&pinfo->real_start);
+	pthread_mutex_lock(&pinfo->stop_lock);
 	pinfo->stop = FALSE;
-	pthread_mutex_unlock(pinfo->stop_lock);
+	pthread_mutex_unlock(&pinfo->stop_lock);
 }

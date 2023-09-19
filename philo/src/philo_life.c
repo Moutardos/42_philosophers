@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/19 15:17:41 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:42:51 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,15 @@ int	stop_condition(t_philo *philo)
 
 void	display_dead(t_table table)
 {
-	int		i;
-	t_philo	current_philo;
+	unsigned int	i;
+	t_philo			current_philo;
 
 	i = 0;
 	while (i < table.size)
 	{
 		current_philo = table.philos[i];
 		if (current_philo.state == DEAD)
-		{
 			display_state(&current_philo, DEAD);
-			return (0);
-		}
 		i++;
 	}
-	return (0);
 }

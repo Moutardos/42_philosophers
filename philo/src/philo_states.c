@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/19 15:23:09 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:00:23 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	sleeping(t_philo *philo)
 	display_state(philo, SLEEPING);
 	philo->state = THINKING;
 	to_wait = philo->pinfo->tm_tosleep;
-	while (!stop_condition(philo) && to_wait)
+	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
 		usleep(200);
 }
 
@@ -72,6 +72,6 @@ void	display_state(t_philo *philo, t_state state)
 		printf("%lu %d has taken a fork\n", time, id);
 	}
 	else if (state == DEAD)
-		printf("%lu %d is dead\n", philo->time_dead / 1000, id);
+		printf("%lu %d died\n", philo->time_dead / 1000, id);
 	pthread_mutex_unlock(&philo->pinfo->printf_lock);
 }
