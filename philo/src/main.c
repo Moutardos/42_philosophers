@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:07:10 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/19 15:59:55 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:03:04 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ int	main(int ac, const char **av)
 	while (++i < args[0])
 		pthread_join(pdt[i], NULL);
 	display_dead(ptable);
+	safe_free(pdt);
 	return (safe_free(args), free_table(ptable), 0);
 }

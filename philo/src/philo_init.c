@@ -6,23 +6,26 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/19 15:52:39 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:02:32 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	init_philo(int n)
+t_philo	init_philo(int n, int size, t_pinfo *pinfo)
 {
 	t_philo	philo;
 
 	philo.id = n + 1;
 	philo.r_fork = NULL;
-	if (n % 2)
-		philo.state = THINKING;
-	else
+	philo.delay = 0;
+	if (philo.id % 2 == 0)
 		philo.state = EATING;
+	else
+		philo.state = THINKING;
 	philo.eaten = 0;
+	philo.pinfo = pinfo;
+	philo.waited = 0;
 	reset_time(&philo.s_start);
 	reset_time(&philo.last_meal);
 	return (philo);
@@ -38,11 +41,9 @@ t_pinfo	*set_pinfo(int *args, int ac)
 	pinfo->stop = TRUE;
 	if (pthread_mutex_init(&pinfo->stop_lock, NULL))
 		return (safe_free(pinfo), NULL);
-	if (pthread_mutex_init(&pinfo->printf_lock, NULL))
-	{
-		pthread_mutex_destroy(&pinfo->stop_lock);
+	if (pthread_mutex_init(&pinfo->print_lock, NULL))
 		return (safe_free(pinfo), NULL);
-	}
+	//free les mutex si fail
 	pinfo->real_start.tv_usec = 0;
 	pinfo->real_start.tv_sec = 0;
 	pinfo->tm_todie = args[1] * 1000;
@@ -70,13 +71,12 @@ int	create_table(t_table *table, int *args, int ac)
 	i = 0;
 	while (i < table->size)
 	{
-		table->philos[i] = init_philo(i);
+		table->philos[i] = init_philo(i, table->size, pinfo);
 		table->philos[i].l_fork = create_fork();
 		if (!table->philos[i].l_fork)
 			return (-1);
 		if (i > 0)
 			table->philos[i].r_fork = table->philos[i - 1].l_fork;
-		table->philos[i].pinfo = pinfo;
 		i++;
 	}
 	if (table->size > 1)
@@ -91,6 +91,9 @@ void	free_table(t_table table)
 	i = 0;
 	if (table.philos)
 	{
+		pthread_mutex_destroy(&table.philos[i].pinfo->print_lock);
+		pthread_mutex_destroy(&table.philos[i].pinfo->stop_lock);
+		safe_free(table.philos[0].pinfo);
 		while (i < table.size)
 		{
 			if (table.philos[i].l_fork)
