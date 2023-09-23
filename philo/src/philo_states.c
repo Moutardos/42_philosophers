@@ -6,20 +6,35 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/21 17:02:02 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/23 03:18:33 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+// void	thinking(t_philo *philo)
+// {
+// 	t_ms	to_wait;
+
+// 	to_wait = philo->pinfo->tm_toeat;
+// 	if (philo->pinfo->size_table % 2)
+// 		if (turn_to_wait_longer(philo))
+// 			to_wait *= 2;
+// 	display_state(philo, THINKING);
+// 	philo->state = EATING;
+// 	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
+// 		usleep(100);
+// 	reset_time(&philo->s_start);
+// }
+
 void	thinking(t_philo *philo)
 {
 	t_ms	to_wait;
 
-	to_wait = philo->pinfo->tm_toeat;
-	if (philo->pinfo->size_table % 2)
-		if (turn_to_wait_longer(philo))
-			to_wait *= 2;
+	if (philo->pinfo->size_table % 2 == 0)
+		to_wait = philo->pinfo->tm_toeat;
+	else
+		to_wait = 0;
 	display_state(philo, THINKING);
 	philo->state = EATING;
 	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
@@ -33,7 +48,7 @@ void	sleeping(t_philo *philo)
 
 	display_state(philo, SLEEPING);
 	philo->state = THINKING;
-	to_wait = philo->pinfo->tm_tosleep;
+	to_wait = philo->pinfo->tm_tosleep + 500;
 	reset_time(&philo->s_start);
 	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
 		usleep(100);
