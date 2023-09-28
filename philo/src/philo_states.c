@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 19:22:53 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 00:47:45 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,24 @@ void	thinking(t_philo *philo)
 	t_ms	to_wait;
 
 	to_wait = philo->pinfo->tm_toeat;
-	if (philo->pinfo->size_table % 2)
+	if (philo->pinfo->size % 2)
+	{
 		if (turn_to_wait_longer(philo))
-			to_wait *= 2;
+		{
+			to_wait = philo->pinfo->tm_toeat * 2;
+		}
+	}
 	display_state(philo, THINKING);
 	philo->state = EATING;
 	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
-		usleep(100);
+		usleep(to_wait - get_time(&philo->s_start));
 	reset_time(&philo->s_start);
 }
-
 // void	thinking(t_philo *philo)
 // {
 // 	t_ms	to_wait;
 
-// 	if (philo->pinfo->size_table % 2 == 0)
+// 	if (philo->pinfo->size % 2 == 0)
 // 		to_wait = philo->pinfo->tm_toeat;
 // 	else
 // 		to_wait = 0;
@@ -51,7 +54,7 @@ void	sleeping(t_philo *philo)
 	to_wait = philo->pinfo->tm_tosleep;
 	reset_time(&philo->s_start);
 	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
-		usleep(100);
+		usleep(to_wait);
 }
 
 void	eating(t_philo *philo)
@@ -67,7 +70,7 @@ void	eating(t_philo *philo)
 	get_time(&philo->last_meal);
 	to_wait = philo->pinfo->tm_toeat;
 	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
-		usleep(100);
+		usleep(to_wait);
 	put_down_forks(philo);
 	if (stop_condition(philo))
 		return ;
@@ -105,7 +108,12 @@ void	display_state(t_philo *philo, t_state state)
 
 int	turn_to_wait_longer(t_philo *philo)
 {
-	if (philo->eaten  == (philo->id/2)  + ((philo->pinfo->size_table + 1)/2 *philo->waited))
+	int	start;
+	int	gap;
+
+	start = philo->id / 2;
+	gap = (philo->pinfo->size + 1) / 2 - 1; 
+	if (philo->eaten == start + gap * philo->waited)
 	{
 		philo->waited++;
 		return (1);

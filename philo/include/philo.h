@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 18:44:37 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 00:50:46 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_pinfo
 	t_ms			tm_toeat;
 	t_ms			tm_tosleep;
 	int				n_toeat;
-	int				size_table;
+	int				size;
 	t_bool			stop;
 	t_time			real_start;
 	pthread_mutex_t	stop_lock;
@@ -49,7 +49,7 @@ typedef struct s_pinfo
 typedef struct s_philo
 {
 	int				id;
-	pthread_t		thread;
+	pthread_t		th;
 	t_fork			*l_fork;
 	t_fork			*r_fork;
 	t_bool			can_eat;
@@ -64,17 +64,11 @@ typedef struct s_philo
 	int				waited;
 }	t_philo;
 
-typedef struct s_table
-{
-	t_philo			*philos;
-	unsigned int	size;
-}	t_table;
-
 // Initialisation
-t_philo	init_philo(int n, int size, t_pinfo *pinfo);
-int		create_table(t_table *table, int *args, int ac);
+t_philo	init_philo(int n, t_pinfo *pinfo);
+t_philo	*create_table(int *args, int ac);
 t_pinfo	*set_pinfo(int *args, int ac);
-void	free_table(t_table table);
+void	free_table(t_philo *philos);
 void	start_routine(t_pinfo	*pinfo);
 
 // Forks related
@@ -93,6 +87,6 @@ int		turn_to_wait_longer(t_philo *philo);
 int		treat_state(t_philo *philo);
 void	*philo_life(void *data);
 int		stop_condition(t_philo *philo);
-void	display_dead(t_table table);
+void	display_dead(t_philo *philos, int size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:07:10 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 18:57:43 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 00:42:30 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int ac, const char **av)
 {
 	int			*args;
 	int			i;
-	t_table		ptable;
+	t_philo		*table;
 
 	args = parse_args(ac, av);
 	if (!args)
@@ -26,14 +26,15 @@ int	main(int ac, const char **av)
 		printf(" time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
 		return (1);
 	}
-	if (create_table(&ptable, args, ac - 1) == -1)
-		return (safe_free(args), free_table(ptable), 0);
+	table = create_table(args, ac - 1);
+	if (!table)
+		return (safe_free(args), free_table(table), 0);
 	i = -1;
 	while (++i < args[0])
-		pthread_create(&(ptable.philos[i].thread), NULL, philo_life, &(ptable.philos[i]));
+		pthread_create(&(table[i].th), NULL, philo_life, &(table[i]));
 	i = -1;
 	while (++i < args[0])
-		pthread_join(ptable.philos[i].thread, NULL);
-	display_dead(ptable);
-	return (safe_free(args), free_table(ptable), 0);
+		pthread_join(table[i].th, NULL);
+	display_dead(table, args[0]);
+	return (safe_free(args), free_table(table), 0);
 }

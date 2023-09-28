@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 19:22:53 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 00:37:02 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,16 @@ int	stop_condition(t_philo *philo)
 	return (end);
 }
 
-void	display_dead(t_table table)
+void	display_dead(t_philo *philos, int size)
 {
 	unsigned int	i;
 	t_philo			current_philo;
 
 	i = 0;
-	while (i < table.size)
+	while (i < size)
 	{
-		current_philo = table.philos[i];
-		if (current_philo.state == DEAD)
-			display_state(&current_philo, DEAD);
+		if (philos[i].state == DEAD)
+			display_state(&philos[i], DEAD);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:56:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 18:45:47 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/28 23:45:39 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 typedef long unsigned int	t_ms;
 typedef struct timeval		t_time;
-typedef int                t_bool;
+typedef int					t_bool;
 
 int		*parse_args(int ac, const char **av);
 
@@ -37,8 +37,8 @@ void	reset_time(t_time *start);
 
 /* Turn a string of number separated by spaces into an array of int.
 	return null if met with an invalid number. */
-int	*ft_sstrtoi(const char **str, int *size);
+int		*ft_sstrtoi(const char **str, int *size);
 
 /* Check if the ptr is not null before freeing */
-void  safe_free(void *ptr);
+void	safe_free(void *ptr);
 #endif

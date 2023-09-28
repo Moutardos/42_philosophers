@@ -6,13 +6,13 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 19:22:15 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 00:51:18 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	init_philo(int n, int size, t_pinfo *pinfo)
+t_philo	init_philo(int n, t_pinfo *pinfo)
 {
 	t_philo	philo;
 
@@ -27,7 +27,6 @@ t_philo	init_philo(int n, int size, t_pinfo *pinfo)
 	philo.pinfo = pinfo;
 	philo.waited = 0;
 	philo.start = pinfo->real_start;
-	printf("real start %lu \n", get_time(&philo.start) /1000);
 	reset_time(&philo.s_start);
 	reset_time(&philo.last_meal);
 	return (philo);
@@ -44,67 +43,69 @@ t_pinfo	*set_pinfo(int *args, int ac)
 	if (pthread_mutex_init(&pinfo->stop_lock, NULL))
 		return (safe_free(pinfo), NULL);
 	if (pthread_mutex_init(&pinfo->print_lock, NULL))
-		return (pthread_mutex_destroy(&pinfo->stop_lock), safe_free(pinfo), NULL);
+	{
+		pthread_mutex_destroy(&pinfo->stop_lock);
+		return (safe_free(pinfo), NULL);
+	}
 	reset_time(&pinfo->real_start);
 	get_time(&pinfo->real_start);
-	printf("real start %lu \n", get_time(&pinfo->real_start) /1000);
 	pinfo->tm_todie = args[1] * 1000;
 	pinfo->tm_toeat = args[2] * 1000;
 	pinfo->tm_tosleep = args[3] * 1000;
 	pinfo->n_toeat = -1;
 	if (ac == 5)
 		pinfo->n_toeat = args[4];
-	pinfo->size_table = args[0];
+	pinfo->size = args[0];
 	return (pinfo);
 }
 
-int	create_table(t_table *table, int *args, int ac)
+t_philo	*create_table(int *args, int ac)
 {
-	unsigned int	i;
-	t_pinfo			*pinfo;
+	int		i;
+	t_pinfo	*pinfo;
+	t_philo	*philos;
 
 	pinfo = set_pinfo(args, ac);
 	if (!pinfo)
-		return (-1);
-	table->size = args[0];
-	table->philos = malloc(table->size * sizeof(t_philo));
-	if (!table->philos)
-		return (-1);
+		return (NULL);
+	philos = malloc(pinfo->size * sizeof(t_philo));
+	if (!philos)
+		return (NULL);
 	i = 0;
-	while (i < table->size)
+	while (i < pinfo->size)
 	{
-		table->philos[i] = init_philo(i, table->size, pinfo);
-		table->philos[i].l_fork = create_fork();
-		if (!table->philos[i].l_fork)
-			return (-1);
+		philos[i] = init_philo(i, pinfo);
+		philos[i].l_fork = create_fork();
+		if (!philos[i].l_fork)
+			return (free_table(philos), NULL);
 		if (i > 0)
-			table->philos[i].r_fork = table->philos[i - 1].l_fork;
+			philos[i].r_fork = philos[i - 1].l_fork;
 		i++;
 	}
-	if (table->size > 1)
-		table->philos[0].r_fork = table->philos[table->size - 1].l_fork;
-	return (0);
+	if (pinfo->size > 1)
+		philos[0].r_fork = philos[pinfo->size - 1].l_fork;
+	return (philos);
 }
 
-void	free_table(t_table table)
+void	free_table(t_philo *philos)
 {
-	unsigned int	i;
+	int	i;
 
 	i = 0;
-	if (table.philos)
+	if (philos)
 	{
-		pthread_mutex_destroy(&table.philos[i].pinfo->print_lock);
-		pthread_mutex_destroy(&table.philos[i].pinfo->stop_lock);
-		safe_free(table.philos[0].pinfo);
-		while (i < table.size)
+		pthread_mutex_destroy(&philos[i].pinfo->print_lock);
+		pthread_mutex_destroy(&philos[i].pinfo->stop_lock);
+		while (i < philos[0].pinfo->size)
 		{
-			if (table.philos[i].l_fork)
+			if (philos[i].l_fork)
 			{
-				pthread_mutex_destroy(&table.philos[i].l_fork->lock);
-				safe_free(table.philos[i].l_fork);
+				pthread_mutex_destroy(&philos[i].l_fork->lock);
+				safe_free(philos[i].l_fork);
 			}
 			i++;
 		}
-		safe_free(table.philos);
+		safe_free(philos[0].pinfo);
+		safe_free(philos);
 	}
 }

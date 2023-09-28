@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 17:45:06 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 18:04:03 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 00:30:58 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static int	ft_isspace(int c)
 		return (1);
 	return (c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == '\v');
 }
-
 
 static int	ft_atoi(const char *nptr)
 {
