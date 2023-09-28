@@ -1,6 +1,5 @@
 CC = cc
 ODIR = obj
-BDIR = bin
 SDIR = src
 IDIR = include
 NAME = philo
@@ -28,7 +27,7 @@ clean:
 	$(RM) -R $(ODIR)
 
 fclean: clean
-	$(RM) -R $(BDIR)
+	$(RM) $(NAME)
 
 re: fclean all
 
