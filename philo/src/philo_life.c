@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/29 00:37:02 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 01:08:15 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ int	stop_condition(t_philo *philo)
 
 void	display_dead(t_philo *philos, int size)
 {
-	unsigned int	i;
-	t_philo			current_philo;
+	int	i;
 
 	i = 0;
 	while (i < size)

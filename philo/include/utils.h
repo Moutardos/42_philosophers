@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:56:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 23:45:39 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/29 01:07:57 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <unistd.h>
 
 typedef long unsigned int	t_ms;
 typedef struct timeval		t_time;
