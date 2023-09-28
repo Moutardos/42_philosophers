@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:55:53 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/19 15:24:56 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/28 17:52:54 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	*parse_args(int ac, const char **av)
 	if (ac < 5 || ac > 6)
 		return (NULL);
 	ac -= 1;
-	args = ft_strtoi(av + 1, &ac);
+	args = ft_sstrtoi(av + 1, &ac);
 	if (!args)
 		return (NULL);
 	while (i < ac)
@@ -54,4 +54,13 @@ void	reset_time(t_time *start)
 {
 	start->tv_sec = 0;
 	start->tv_usec = 0;
+}
+
+void	safe_free(void *ptr)
+{
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
 }

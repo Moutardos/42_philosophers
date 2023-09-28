@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/21 17:02:32 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/24 18:18:42 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	create_table(t_table *table, int *args, int ac)
 	if (!pinfo)
 		return (-1);
 	table->size = args[0];
-	table->philos = ft_calloc(table->size, sizeof(t_philo));
+	table->philos = malloc(table->size * sizeof(t_philo));
 	if (!table->philos)
 		return (-1);
 	i = 0;

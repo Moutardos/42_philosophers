@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:07:10 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/21 17:03:04 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/24 18:18:56 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int ac, const char **av)
 		printf(" time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
 		return (1);
 	}
-	pdt = ft_calloc(args[0], sizeof(pthread_t));
+	pdt = malloc(args[0] * sizeof(pthread_t));
 	if (create_table(&ptable, args, ac - 1) == -1)
 		return (safe_free(args), free_table(ptable), 0);
 	i = -1;
