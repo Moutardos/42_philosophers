@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/24 18:18:42 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:22:15 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_philo	init_philo(int n, int size, t_pinfo *pinfo)
 	philo.eaten = 0;
 	philo.pinfo = pinfo;
 	philo.waited = 0;
+	philo.start = pinfo->real_start;
+	printf("real start %lu \n", get_time(&philo.start) /1000);
 	reset_time(&philo.s_start);
 	reset_time(&philo.last_meal);
 	return (philo);
@@ -38,14 +40,14 @@ t_pinfo	*set_pinfo(int *args, int ac)
 	pinfo = malloc(sizeof(t_pinfo));
 	if (!pinfo)
 		return (NULL);
-	pinfo->stop = TRUE;
+	pinfo->stop = FALSE;
 	if (pthread_mutex_init(&pinfo->stop_lock, NULL))
 		return (safe_free(pinfo), NULL);
 	if (pthread_mutex_init(&pinfo->print_lock, NULL))
-		return (safe_free(pinfo), NULL);
-	//free les mutex si fail
-	pinfo->real_start.tv_usec = 0;
-	pinfo->real_start.tv_sec = 0;
+		return (pthread_mutex_destroy(&pinfo->stop_lock), safe_free(pinfo), NULL);
+	reset_time(&pinfo->real_start);
+	get_time(&pinfo->real_start);
+	printf("real start %lu \n", get_time(&pinfo->real_start) /1000);
 	pinfo->tm_todie = args[1] * 1000;
 	pinfo->tm_toeat = args[2] * 1000;
 	pinfo->tm_tosleep = args[3] * 1000;
@@ -105,12 +107,4 @@ void	free_table(t_table table)
 		}
 		safe_free(table.philos);
 	}
-}
-
-void	start_routine(t_pinfo	*pinfo)
-{
-	get_time(&pinfo->real_start);
-	pthread_mutex_lock(&pinfo->stop_lock);
-	pinfo->stop = FALSE;
-	pthread_mutex_unlock(&pinfo->stop_lock);
 }

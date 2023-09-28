@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 09:56:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 18:03:43 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:45:47 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define FALSE 0
 # define TRUE 1
 # include <sys/time.h>
+# include <time.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <limits.h>

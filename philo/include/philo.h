@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/28 17:58:51 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/28 18:44:37 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_pinfo
 typedef struct s_philo
 {
 	int				id;
+	pthread_t		thread;
 	t_fork			*l_fork;
 	t_fork			*r_fork;
 	t_bool			can_eat;

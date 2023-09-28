@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/21 16:12:45 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/28 19:22:53 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,6 @@ void	*philo_life(void *data)
 	t_philo	*philo;
 
 	philo = ((t_philo *)data);
-	while (philo->pinfo->stop)
-		usleep(100);
-	philo->start = philo->pinfo->real_start;
 	get_time(&philo->last_meal);
 	get_time(&philo->s_start);
 	while (!treat_state(philo))
@@ -42,29 +39,30 @@ int	treat_state(t_philo *philo)
 
 int	stop_condition(t_philo *philo)
 {
-	int	goal_achieved;
+	int	end;
 
+	end = FALSE;
+	pthread_mutex_lock(&philo->pinfo->stop_lock);
 	if (philo->pinfo->stop || philo->state == OUT)
-		return (1);
-	if (get_time(&philo->last_meal) >= philo->pinfo->tm_todie)
+		end = TRUE;
+	else if (get_time(&philo->last_meal) >= philo->pinfo->tm_todie)
 	{
 		philo->state = DEAD;
-		pthread_mutex_lock(&philo->pinfo->stop_lock);
 		if (!philo->pinfo->stop)
 			philo->pinfo->stop = TRUE;
-		pthread_mutex_unlock(&philo->pinfo->stop_lock);
 		philo->time_dead = get_time(&philo->start);
-		return (1);
+		end = TRUE;
 	}
-	if (philo->pinfo->n_toeat >= 0)
+	else if (philo->pinfo->n_toeat >= 0)
 	{
 		if (philo->eaten >= philo->pinfo->n_toeat)
 		{
 			philo->state = OUT;
-			return (1);
+			end = TRUE;
 		}
 	}
-	return (0);
+	pthread_mutex_unlock(&philo->pinfo->stop_lock);
+	return (end);
 }
 
 void	display_dead(t_table table)
