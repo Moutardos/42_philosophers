@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/29 01:08:15 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/30 15:58:00 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,16 @@ int	stop_condition(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->pinfo->stop_lock);
 	return (end);
+}
+
+t_ms	min_death(t_philo *philo, t_ms t1)
+{
+	t_ms	to_die;
+
+	to_die = philo->pinfo->tm_todie - get_time(&philo->last_meal);
+	if (to_die < t1)
+		return (to_die);
+	return (t1);
 }
 
 void	display_dead(t_philo *philos, int size)

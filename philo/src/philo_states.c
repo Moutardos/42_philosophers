@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/29 00:47:45 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/30 15:56:22 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	thinking(t_philo *philo)
 			to_wait = philo->pinfo->tm_toeat * 2;
 		}
 	}
+	to_wait -= get_time(&philo->s_start);
 	display_state(philo, THINKING);
 	philo->state = EATING;
-	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
-		usleep(to_wait - get_time(&philo->s_start));
+	usleep(min_death(philo, to_wait));
 	reset_time(&philo->s_start);
 }
 // void	thinking(t_philo *philo)
@@ -53,8 +53,7 @@ void	sleeping(t_philo *philo)
 	philo->state = THINKING;
 	to_wait = philo->pinfo->tm_tosleep;
 	reset_time(&philo->s_start);
-	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
-		usleep(to_wait);
+	usleep(to_wait);
 }
 
 void	eating(t_philo *philo)
@@ -69,8 +68,7 @@ void	eating(t_philo *philo)
 	reset_time(&philo->last_meal);
 	get_time(&philo->last_meal);
 	to_wait = philo->pinfo->tm_toeat;
-	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
-		usleep(to_wait);
+	usleep(to_wait);
 	put_down_forks(philo);
 	if (stop_condition(philo))
 		return ;

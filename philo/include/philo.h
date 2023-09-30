@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/29 00:50:46 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/30 15:57:40 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_philo
 }	t_philo;
 
 // Initialisation
+
 t_philo	init_philo(int n, t_pinfo *pinfo);
 t_philo	*create_table(int *args, int ac);
 t_pinfo	*set_pinfo(int *args, int ac);
@@ -72,21 +73,28 @@ void	free_table(t_philo *philos);
 void	start_routine(t_pinfo	*pinfo);
 
 // Forks related
+
 t_fork	*create_fork(void);
 int		are_forks_free(t_fork *l_fork, t_fork *r_fork);
 int		use_forks(t_philo *philo);
 void	put_down_forks(t_philo *philo);
 
 // States treatment
+
 void	thinking(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	eating(t_philo *philo);
 void	display_state(t_philo *philo, t_state state);
 int		turn_to_wait_longer(t_philo *philo);
 // The daily life of a philosopher
+
 int		treat_state(t_philo *philo);
 void	*philo_life(void *data);
 int		stop_condition(t_philo *philo);
+
+/* Return the lowest time between t1 and the time left for philo to live*/
+t_ms	min_death(t_philo *philo, t_ms t1);
+
 void	display_dead(t_philo *philos, int size);
 
 #endif
