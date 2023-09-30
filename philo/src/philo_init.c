@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:24:51 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/29 00:51:18 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:54:13 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_philo	init_philo(int n, t_pinfo *pinfo)
 	philo.pinfo = pinfo;
 	philo.waited = 0;
 	philo.start = pinfo->real_start;
-	reset_time(&philo.s_start);
+	reset_time(&philo.idle_time);
 	reset_time(&philo.last_meal);
 	return (philo);
 }

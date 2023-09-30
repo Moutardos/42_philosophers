@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 16:39:15 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/30 15:56:22 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:55:00 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,24 @@
 void	thinking(t_philo *philo)
 {
 	t_ms	to_wait;
+	t_ms	time_slept;
 
 	to_wait = philo->pinfo->tm_toeat;
 	if (philo->pinfo->size % 2)
 	{
 		if (turn_to_wait_longer(philo))
 		{
-			to_wait = philo->pinfo->tm_toeat * 2;
+			to_wait = philo->pinfo->tm_toeat * 2 - 1000;
 		}
 	}
-	to_wait -= get_time(&philo->s_start);
+	time_slept = get_time(&philo->idle_time);
+	if (time_slept > to_wait)
+		to_wait = 0;
+	else
+		to_wait -= time_slept;
 	display_state(philo, THINKING);
 	philo->state = EATING;
 	usleep(min_death(philo, to_wait));
-	reset_time(&philo->s_start);
 }
 // void	thinking(t_philo *philo)
 // {
@@ -40,9 +44,9 @@ void	thinking(t_philo *philo)
 // 		to_wait = 0;
 // 	display_state(philo, THINKING);
 // 	philo->state = EATING;
-// 	while (!stop_condition(philo) && get_time(&philo->s_start) < to_wait)
+// 	while (!stop_condition(philo) && get_time(&philo->idle_time) < to_wait)
 // 		usleep(100);
-// 	reset_time(&philo->s_start);
+// 	reset_time(&philo->idle_time);
 // }
 
 void	sleeping(t_philo *philo)
@@ -52,8 +56,9 @@ void	sleeping(t_philo *philo)
 	display_state(philo, SLEEPING);
 	philo->state = THINKING;
 	to_wait = philo->pinfo->tm_tosleep;
-	reset_time(&philo->s_start);
-	usleep(to_wait);
+	reset_time(&philo->idle_time);
+	get_time(&philo->idle_time);
+	usleep(min_death(philo, to_wait));
 }
 
 void	eating(t_philo *philo)
@@ -68,13 +73,12 @@ void	eating(t_philo *philo)
 	reset_time(&philo->last_meal);
 	get_time(&philo->last_meal);
 	to_wait = philo->pinfo->tm_toeat;
-	usleep(to_wait);
+	usleep(min_death(philo, to_wait));
 	put_down_forks(philo);
 	if (stop_condition(philo))
 		return ;
 	philo->state = SLEEPING;
 	philo->eaten++;
-	reset_time(&philo->s_start);
 }
 
 void	display_state(t_philo *philo, t_state state)

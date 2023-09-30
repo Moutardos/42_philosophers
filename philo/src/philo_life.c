@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 00:52:28 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/30 15:58:00 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:54:13 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*philo_life(void *data)
 
 	philo = ((t_philo *)data);
 	get_time(&philo->last_meal);
-	get_time(&philo->s_start);
+	get_time(&philo->idle_time);
 	while (!treat_state(philo))
 		usleep(100);
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: lcozdenm <lcozdenm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 11:08:41 by lcozdenm          #+#    #+#             */
-/*   Updated: 2023/09/30 15:57:40 by lcozdenm         ###   ########.fr       */
+/*   Updated: 2023/09/30 16:54:13 by lcozdenm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_philo
 	t_state			state;
 	t_time			start;
 	t_ms			delay;
-	t_time			s_start;
+	t_time			idle_time;
 	t_time			last_meal;
 	t_ms			time_dead;
 	t_pinfo			*pinfo;
